@@ -46,7 +46,7 @@ while True:
 
 llm_prompt = """
 
-You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
+You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
 
 Python Knowledge Base:
 {knowledge_base_string}
@@ -56,3 +56,7 @@ User Question: {user_question}
 Answer:"
 
 """ 
+
+knowledge_base_string = ""                      # hold the knowledge_base dictionary stuff
+for key, value in knowledge_base.items():      # iterate through k:v pairs of dict
+    knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"       # format string to something LLM can use 
