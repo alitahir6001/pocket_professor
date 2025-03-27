@@ -103,7 +103,7 @@ def response(user_question):
             try:      
                 return knowledge_base[key]        # return the dictionary[key] (that has already been lower cased)
             except(KeyError):
-                return "No response found for question"
+                return "No response found for question!"
 
 # method to list all keys aka questions of the knowledge_base dict.               
 
