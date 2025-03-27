@@ -7,13 +7,10 @@ def response(user_question):
     user_question = user_question.lower()     # first, take user input and make it lowercase
     for key in knowledge_base.keys():         # then iterate through the keys in the dictionary using .keys()
         if user_question == key.lower():      # compare the lower case question with a lower cased key
-            try:      
-                return knowledge_base[key]        # return the dictionary[key] (that has already been lower cased)
-            except(KeyError):
-                return "No response found for question!"
-
+            return knowledge_base[key]        # return the dictionary[key] (that has already been lower cased)
+    return "I didn't recognize the question, can you please try again?" \
+    ""
 # method to list all keys aka questions of the knowledge_base dict.               
-
 def list_available_questions(knowledge_base):
     try:
         for key in knowledge_base.keys():
@@ -31,8 +28,8 @@ while True:
         elif user_question.lower() == "list" or user_question.lower() == "show all":
             list_available_questions(knowledge_base)
         elif user_question.lower() == "help":
-        # Help message for user instructions
 
+        # Help message for user instructions
             help_message = "Instructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
             print(help_message)
         else:
@@ -59,4 +56,4 @@ Answer:"
 
 knowledge_base_string = ""                      # hold the knowledge_base dictionary stuff
 for key, value in knowledge_base.items():      # iterate through k:v pairs of dict
-    knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"       # format string to something LLM can use 
+    knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"       # format string for LLM use
