@@ -1,6 +1,6 @@
+from knowledge import knowledge_base
+
 # Creating a function that takes in a question and fetches the answer
-    # take user's input question and make it lowercase to address case-sensitivity
-    # also want to make lowercase the individual keys of the dict. during comparison.
     
 # method to handle question/answer interaction ONLY
 def response(user_question):
