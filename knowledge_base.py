@@ -1,4 +1,5 @@
 from knowledge import knowledge_base
+import requests
 
 # Creating a function that takes in a question and fetches the answer
     
@@ -62,11 +63,23 @@ Answer:"
 """ 
 
 knowledge_base_string = ""                                                  # hold formatted knowledge_base content
-for key, value in knowledge_base.items():                                   # iterate through k:v pairs
-    knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"       # format string for LLM use
+try:
+    for key, value in knowledge_base.items():                               # iterate through k:v pairs
+        knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"   # format string for LLM use
 
-# create the full prompt
-full_prompt = llm_prompt.format(user_question = user_question, knowledge_base_string = knowledge_base_string)
+    # create the full prompt
+    full_prompt = llm_prompt.format(user_question = user_question, knowledge_base_string = knowledge_base_string)
 
-# create the request data JSON via dictionary
-request_data = {"model": "mistral:latest", "prompt":full_prompt}
+    # create the request body JSON
+    request_data = {"model": "mistral:latest", "prompt":full_prompt}
+
+    # send that shit to ollama and hold the response
+    response = requests.post("http://localhost:11434/api/generate", json=request_data)
+    response.raise_for_status()     
+
+except requests.exceptions.RequestException as reqErr:
+    print(f"Error sending request to Ollama API: {reqErr}")
+except ValueError as valErr:
+    print(f"Unexpected value error has occured: {valErr}")
+except Exception as excepErr:
+    print(f"Unexpected exception occured: {excepErr}")
