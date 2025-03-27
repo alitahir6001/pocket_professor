@@ -61,6 +61,12 @@ Answer:"
 
 """ 
 
-knowledge_base_string = ""                      # hold the knowledge_base dictionary stuff
-for key, value in knowledge_base.items():      # iterate through k:v pairs of dict
+knowledge_base_string = ""                                                  # hold formatted knowledge_base content
+for key, value in knowledge_base.items():                                   # iterate through k:v pairs
     knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"       # format string for LLM use
+
+# create the full prompt
+full_prompt = llm_prompt.format(user_question = user_question, knowledge_base_string = knowledge_base_string)
+
+# create the request data JSON via dictionary
+request_data = {"model": "mistral:latest", "prompt":full_prompt}
