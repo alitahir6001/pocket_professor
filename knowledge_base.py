@@ -1,88 +1,90 @@
-from knowledge import knowledge_base
-import requests
+# Creating a knowledge base for the agent to refer to
+# start with an empty dict that we can add k:v pairs to later.
 
-# Creating a function that takes in a question and fetches the answer
+knowledge_base = {}
+
+# Populate the dictonary with key value pair with the following syntax.
+# We will add three question and answer pairs to the empty dict.
+knowledge_base["What is a Variable in Python?"] = """In Python, a variable is a named storage location that holds a value. You can think of it as a container for data. For example, x = 10 creates a variable named x and assigns the value 10 to it."""
+
+knowledge_base["How do I use a for loop?"] = "A for loop is used to iterate over a sequence (such as a list, tuple, or string) or other iterable objects. Here's an example: for item in [1, 2, 3]: print(item) This loop will print each item in the list."
+
+knowledge_base["What are the different data types in Python?"] = "Python has several built-in data types, including: int: Integers (e.g., 10, -5), float: Floating-point numbers (e.g., 3.14, 2.5), str: Strings (e.g., 'Hello', 'World'), bool: Booleans (e.g., True, False), list: Ordered collections of items (e.g., [1, 2, 3]), dict: Key-value pairs (e.g., {'name': 'John', 'age': 30})"
+
+knowledge_base["What is Object Orientated Programming in Python?"] = "Object Orientated Programming, or OOP for short, is a programming paradigm that uses classes, and their instantiated objects to structure code."
+
+knowledge_base["What is a module?"] = "A module is just Python file with a .py extension. It is used to help break down large and complex programs into smaller, more manageable files. For example you can create a python module with many different functions, classes, etc., and then import that module into other python files to re-use those blocks of code. A collection of modules usually becomes a library."
+
+knowledge_base["What are decorators in Python?"] = """
+
+Decorators are a way to modify or extend the behavior of a function or classes without changing the source code of that function or class. You can create a function that takes another function as its argument, and within that method, you define another nested method that does the magic. You then do a return of that nested method, and then add that decorator wherever you want to use it, like before a class, or a separate method. Example:
+    ```python
+
+    def my_decorator(func):
+        def(wrapper):
+            print("Before the function() call!")
+            func()
+            print("After the function() call!")
+        return wrapper 
+
+"""
+
+knowledge_base["What is asynchronous programming in Python"] = """
+
+Asynchronous programming allows you to perform multiple tasks concurrently without blocking the main thread. It's like async/await in Node.js. The standard practice is to use the 'asyncio' library that is imported into the python file you are working on. Note that you *must* import one of the async libraries to do async/await programming in Python, because python does not have a built-in event loop like Node.js does.  Example:
+    ```python
+
+    import asyncio # or Tornado, Twisted, curio, turio libraries. 
+    async def banana():
+        print("Hello I am...!")
+        await asyncio.sleep(5)
+        print("...a banana!")
     
-# method to handle question/answer interaction ONLY
-def response(user_question):
-    try:
-        user_question = user_question.lower()     # first, take user input and make it lowercase
-        for key in knowledge_base.keys():         # then iterate through the keys in the dictionary using .keys()
-            if user_question == key.lower():      # compare the lower case question with a lower cased key
-                return knowledge_base[key]        # return the dictionary[key] (that has already been lower cased)
-        return "\nI didn't recognize the question, can you please try again?\n" 
-    except(TypeError, AttributeError):
-        return "\nSorry I didn't recognize that input, can you please try again?\n"
-    except Exception as error:
-        return f"\nAn unexpected error caught by Python has occurred: {error}\n"
-    
+    asyncio.run( main() )
 
-# method to list all keys of the knowledge_base dict.               
-def list_available_questions(knowledge_base):
-    try:
-        for key in knowledge_base.keys():
-            print(key)
-    except AttributeError:
-        print("\nInvalid input. Please provide a dictionary.\n")
+"""
 
-# "Main Loop" - infinite loop to repeat prompt for user question. Handles ongoing interaction with user
-while True:
-    try:
-        print("Welcome to Pocket Professor.\n")
-        user_question = input("Ask a Python question (or type 'exit' or 'quit' to stop): ")
-        if user_question.lower() == "exit" or user_question.lower() == "quit":
-            print("Bye bye!")
-            break
-        elif user_question.lower() == "list" or user_question.lower() == "show all":
-            list_available_questions(knowledge_base)
-        elif user_question.lower() == "help":
-        # Help message for user instructions
-            help_message = "Instructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
-            print(help_message)
-        else:
-            answer = response(user_question)
-            print(answer)
-    except(KeyboardInterrupt):
-        print("\nOK! See you later!\n")
-        break
-    except (EOFError):
-        print("\nEnd of input detected, so I will exit. See you later!\n")
+knowledge_base["What are metaclasses in Python?"] = """
 
-# LLM Proompting (yes i said proompt)
+Metaclasses are the 'classes of classes'. They control the creation and behavior of classes themselves. They allow you to customize class creation, add or modify attributes and methods, and enforce coding standards. They are a powerful but advanced feature, often used for frameworks and libraries. Example:
+```python
 
-llm_prompt = """
+class Meta(type):
+def __new__(meta, name, bases, dct):
+    x = super().__new__(meta, name, bases, dct)
+    x.attribute = 100
+    return x
 
-You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
+class MyClass(metaclass=Meta):
+    pass
 
-Python Knowledge Base:
-{knowledge_base_string}
+obj = MyClass()
+print(obj.attribute)
 
-User Question: {user_question}
+"""
 
-Answer:"
+knowledge_base["What is the difference between multiprocessing and multithreading in Python?"] = """
 
-""" 
+Multithreading uses multiple threads within a single process to achieve concurrency (aka doing a bunch of stuff at the same time). Multiprocessing, as the name suggests, uses multiple processes each with its own Python interpreter. Multithreading is bound by I/O, thanks to the 'Global Interpreter Lock (GIL), whereas multithreading is bound by the CPU (running multiple python interpreters is expensive!) Example:
+```python
 
-knowledge_base_string = ""                                                  # hold formatted knowledge_base content
-try:
-    for key, value in knowledge_base.items():                               # iterate through k:v pairs
-        knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"   # format string for LLM use
+Ex. of multithreading:
 
-    # create the full prompt
-    full_prompt = llm_prompt.format(user_question = user_question, knowledge_base_string = knowledge_base_string)
+import threading
+def print_numbers():
+    for banana in range(5):
+        print(threading.current_thread().name banana)
+thread1 = threading.Thread(target=print_numbers)
+thread1.start()
 
-    # create the request body JSON
-    request_data = {"model": "mistral:latest", "prompt":full_prompt}
+Ex. of multiprocessing:
 
-    # send that shit to ollama and hold the response
-    response = requests.post("http://localhost:11434/api/generate", json=request_data)
-    response.raise_for_status()     
+import multiprocessing
 
-except requests.exceptions.RequestException as reqErr:
-    print(f"Error sending request to Ollama API: {reqErr}")
-except ValueError as valErr:
-    print(f"Unexpected value error has occured: {valErr}")
-except Exception as excepErr:
-    print(f"Unexpected exception occured: {excepErr}")
-except Exception as e:
-    print(f"An unexpected error occured: {e}")
+def print_numbers():
+    for banana in range(5):
+        print(multiprocessing.current_process().name, banana)
+process1 = multiprocesing.Process(target=print_numbers)
+process1.start()
+
+"""
