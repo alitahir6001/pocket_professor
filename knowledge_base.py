@@ -17,7 +17,7 @@ def response(user_question):
         return f"\nAn unexpected error caught by Python has occurred: {error}\n"
     
 
-# method to list all keys aka questions of the knowledge_base dict.               
+# method to list all keys of the knowledge_base dict.               
 def list_available_questions(knowledge_base):
     try:
         for key in knowledge_base.keys():
@@ -28,6 +28,7 @@ def list_available_questions(knowledge_base):
 # "Main Loop" - infinite loop to repeat prompt for user question. Handles ongoing interaction with user
 while True:
     try:
+        print("Welcome to Pocket Professor.\n")
         user_question = input("Ask a Python question (or type 'exit' or 'quit' to stop): ")
         if user_question.lower() == "exit" or user_question.lower() == "quit":
             print("Bye bye!")
@@ -83,3 +84,5 @@ except ValueError as valErr:
     print(f"Unexpected value error has occured: {valErr}")
 except Exception as excepErr:
     print(f"Unexpected exception occured: {excepErr}")
+except Exception as e:
+    print(f"An unexpected error occured: {e}")
