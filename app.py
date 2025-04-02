@@ -14,35 +14,40 @@ Answer:
 
 def list_available_questions(knowledge_base):
     try:
-        if not knowledge_base:                                                          # Check if dict. is empty with "not" operator.
+        if not knowledge_base:                               # Check if dict. is empty with "not" operator.
             print("\nThe knowledge base is empty.\n")
-            return                                                                      # Exit w/ empty return if dictonary is empty.
+            return                                           # Exit w/ empty return if dictonary is empty.
 
         print("Available questions:")
         for question in knowledge_base.keys():
-            print(f"- {question}")                                                      # adds hyphen when printing each question.
+            print(f"- {question}")                           # adds hyphen when printing each question.
     except Exception as errors:
         print(f"\nAn error occurred while listing questions: {errors}\n")
 
 def response(user_question):
     try:
         user_question_lower = user_question.lower()
-        for key in knowledge_base.keys():                                               # implicit bool to check if user key exists in dict.
-            if user_question_lower == key.lower():                                      # if user input matches the key...
-                return knowledge_base[key]                                              # return that question key from the dict.
+        for key in knowledge_base.keys():                      # implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():             # if user input matches the key...
+                return knowledge_base[key]                     # return that question key from the dict.
         else:
             return "\nI didn't recognize the question, can you please try again?\n"
-    except Exception as errors:
-        return f"\nAn error occurred while processing the response: {errors}\n"         # catch any exceptions as "errors" with message.
+    except Exception as errors:                                # catch any exceptions as "errors"
+        return f"\nAn error occurred while processing the response: {errors}\n"
     
 
+
+first_interaction = True               # flag for initial welcome message
 while True:
     try:
-        user_question = input("\n Welcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
+        if first_interaction == True:
+            user_question = input("\n Welcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
+        else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
+        first_interaction = False       # set flag to not display welcome msg again.
         user_question_lower = user_question.lower()
 
         if user_question_lower == "exit" or user_question_lower == "quit":
-            print("Bye bye!\n")
+            print("\nBye bye!\n")
             break
         elif user_question_lower == "list" or user_question_lower == "show all":
             list_available_questions(knowledge_base)
