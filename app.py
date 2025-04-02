@@ -14,28 +14,31 @@ Answer:
 
 def list_available_questions(knowledge_base):
     try:
-        if not knowledge_base:
-            print("The knowledge base is empty.")
-            return
+        if not knowledge_base:                                                          # Check if dict. is empty with "not" operator.
+            print("\nThe knowledge base is empty.\n")
+            return                                                                      # Exit w/ empty return if dictonary is empty.
 
         print("Available questions:")
         for question in knowledge_base.keys():
-            print(f"- {question}")
-    except Exception as e:
-        print(f"An error occurred while listing questions: {e}")
+            print(f"- {question}")                                                      # adds hyphen when printing each question.
+    except Exception as errors:
+        print(f"\nAn error occurred while listing questions: {errors}\n")
 
 def response(user_question):
     try:
-        if user_question in knowledge_base:
-            return knowledge_base[user_question]
+        user_question_lower = user_question.lower()
+        for key in knowledge_base.keys():                                               # implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():                                      # if user input matches the key...
+                return knowledge_base[key]                                              # return that question key from the dict.
         else:
-            return "I didn't recognize the question, can you please try again?"
-    except Exception as e:
-        return f"An error occurred while processing the response: {e}"
+            return "\nI didn't recognize the question, can you please try again?\n"
+    except Exception as errors:
+        return f"\nAn error occurred while processing the response: {errors}\n"         # catch any exceptions as "errors" with message.
+    
 
 while True:
     try:
-        user_question = input("Ask a question (or type 'exit' or 'quit' to stop): ")
+        user_question = input("\n Welcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
         user_question_lower = user_question.lower()
 
         if user_question_lower == "exit" or user_question_lower == "quit":
@@ -44,7 +47,7 @@ while True:
         elif user_question_lower == "list" or user_question_lower == "show all":
             list_available_questions(knowledge_base)
         elif user_question_lower == "help":
-            help_message = "Instructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
+            help_message = "\nInstructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
             print(help_message)
         elif user_question_lower in [key.lower() for key in knowledge_base]:
             answer = response(user_question)
