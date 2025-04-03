@@ -44,12 +44,23 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     # 4. Return the best ones above a certain threshold between 0.0 - 1.0
 
     try:
-        best_match = None                               # init a best match container
-        similarity_score = 0.0                          # starting score
-        for potential_match in know_base_keys:          # iterate thru list of keys.
-            userSet = set(user_question)
-            potentialSet = set(potential_match)         # create a set for each string (user, and dict. key)
-            matching_vals = userSet.intersection(potentialSet)
+        best_match = None                               # init best match so far
+        similarity_score = 0.0                          # init a score for this similarity.
+        for potential_match in know_base_keys:          # main loop of typo_checker. Iterate thru list of keys.
+            userInputSet = set(user_question)                            # create a set for each string (user, and dict. key)
+            potentialSet = set(potential_match)
+            matching_vals = userInputSet.intersection(potentialSet)      # collect all unique chars within both sets
+            union_set = userInputSet.union(potentialSet)                 # combine all unique chars into new set
+            if len(union_set) > 0:                                       # if set is not empty...
+
+                # calculate current_ratio: length of all matching chars in user question with all matching chars of the ditionary key
+                current_ratio = len(matching_vals) / len(union_set) 
+            else:
+                current_ratio = 0.0                     # if both strings were empty, they have no similarity to each other
+                
+            if current_ratio > similarity_score and current_ratio > threshold:
+                similarity_score = current_ratio
+                potential_match = best_match
             pass
 
     except Exception as errors:
