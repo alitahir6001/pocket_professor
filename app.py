@@ -37,30 +37,20 @@ def response(user_question):
     
 
 def typo_checker(user_question, know_base_keys, threshold=0.8):
-    """
-    Finds the closest matching question in the knowledge base to the user's input,
-    using a simple character-matching similarity algorithm.
 
-    Args:
-        user_question (str): The user's question (lowercased).
-        knowledge_base_keys (list): A list of the lowercased keys from the knowledge base.
-        threshold (float, optional): The minimum similarity ratio to consider a match.
-            Defaults to 0.8.
+    # 1. Iterate through potential matches w/ set()
+    # 2. Calculate the similarity
+    # 3. Keep track of the shared count
+    # 4. Return the best ones above a certain threshold between 0.0 - 1.0
 
-    Returns:
-        str or None: The closest matching key from the knowledge base, or None if no
-            match is found.
-    """
     try:
-        shared_count = 0                        # hold the shared character count
-        for potential_match in know_base_keys:  # iterate thru list of keys. Remember: know_base_keys will be arg passed later in main loop.
-            if potential_match == user_question:
-                for char_user in potential_match:
-                    if char_user in potential_match:
-                        shared_count_current += 1
-                # Now we have the shared_count_current for this potential_match       
-                # We need to calculate the similarity ratio and compare with the threshold
-                pass
+        best_match = None                               # init a best match container
+        similarity_score = 0.0                          # starting score
+        for potential_match in know_base_keys:          # iterate thru list of keys.
+            userSet = set(user_question)
+            potentialSet = set(potential_match)         # create a set for each string (user, and dict. key)
+            matching_vals = userSet.intersection(potentialSet)
+            pass
 
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
