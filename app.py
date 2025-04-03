@@ -37,11 +37,20 @@ def response(user_question):
     
 
 def typo_checker(user_question, know_base_keys, threshold=0.8):
+    """
+    Goal: find key in dict. similar to user input. Must be above a certain threshold:
+        1. Init placeholder values for best match and a score for that similarity.
+        2. Iterate through keys of dictionary. 
+        3. Calculate similarity for current key being examined. Use vars to hold:
+            3a. Create set() 's for each string to compare (ex: user input string vs key string)
+            3b. find my_intersection = set1.intersection(set2) -- of the two sets
+            3c. find my_union = set1.union(set2) -- of the two sets
+            3d. calculate current ratio by dividing: my_current_ration = length of my_intersection / my_union
+        4. Use if statement to check best match by comparing current_ratio with similarity score and the threshold it should go above.
+            4a. if current_ratio > similarity_score AND current_ratio > threshold...
+            4b. 
 
-    # 1. Iterate through potential matches w/ set()
-    # 2. Calculate the similarity
-    # 3. Keep track of the shared count
-    # 4. Return the best ones above a certain threshold between 0.0 - 1.0
+    """
 
     try:
         best_match = None                               # init best match so far
