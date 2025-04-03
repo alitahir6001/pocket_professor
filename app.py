@@ -27,23 +27,52 @@ def list_available_questions(knowledge_base):
 def response(user_question):
     try:
         user_question_lower = user_question.lower()
-        for key in knowledge_base.keys():                      # implicit bool to check if user key exists in dict.
-            if user_question_lower == key.lower():             # if user input matches the key...
-                return knowledge_base[key]                     # return that question key from the dict.
+        for key in knowledge_base.keys():                     # implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():            # if user input matches the key...
+                return knowledge_base[key]                    # return that question key from the dict.
         else:
             return "\nI didn't recognize the question, can you please try again?\n"
     except Exception as errors:                                # catch any exceptions as "errors"
         return f"\nAn error occurred while processing the response: {errors}\n"
     
 
+def typo_checker(user_question, know_base_keys, threshold=0.8):
+    """
+    Finds the closest matching question in the knowledge base to the user's input,
+    using a simple character-matching similarity algorithm.
 
-first_interaction = True               # flag for initial welcome message
+    Args:
+        user_question (str): The user's question (lowercased).
+        knowledge_base_keys (list): A list of the lowercased keys from the knowledge base.
+        threshold (float, optional): The minimum similarity ratio to consider a match.
+            Defaults to 0.8.
+
+    Returns:
+        str or None: The closest matching key from the knowledge base, or None if no
+            match is found.
+    """
+    try:
+        shared_count = 0                        # hold the shared character count
+        for potential_match in know_base_keys:  # iterate thru list of keys. Remember: know_base_keys will be arg passed later in main loop.
+            if potential_match == user_question:
+                for char_user in potential_match:
+                    if char_user in potential_match:
+                        shared_count_current += 1
+                # Now we have the shared_count_current for this potential_match       
+                # We need to calculate the similarity ratio and compare with the threshold
+                pass
+
+    except Exception as errors:
+        return f"\nThere was an error with checking the question: {errors}\n"
+
+
+first_interaction = True                                       # flag for initial welcome message
 while True:
     try:
         if first_interaction == True:
             user_question = input("\n Welcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
         else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
-        first_interaction = False       # set flag to not display welcome msg again.
+        first_interaction = False                              # set flag to not display welcome msg again.
         user_question_lower = user_question.lower()
 
         if user_question_lower == "exit" or user_question_lower == "quit":
