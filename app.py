@@ -2,7 +2,7 @@ import requests
 from knowledge_base import knowledge_base
 
 llm_prompt = """
-You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
+You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects and provide a specialized learning plan in the style of a college syllabus to fit their needs. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
 
 Python Knowledge Base:
 {knowledge_base_string}
@@ -36,17 +36,18 @@ def response(user_question):
         return f"\nAn error occurred while processing the response: {errors}\n"
     
 
+# Similarity algorithm
 def typo_checker(user_question, know_base_keys, threshold=0.8):
     """
-    Goal: find key in dict. similar to user input. Must be above a certain threshold:
+    Goal: find key in dict. most similar to user input. Must be above a certain threshold:
         1. Init placeholder values for best match and a score for that similarity (Before the loop).
         2. Iterate through keys of dictionary. 
         3. Calculate similarity for current key being examined. Use vars to hold values (Inside the loop).
             3a. Create set() 's for each string to compare (ex: user input string vs key string)
             3b. find my_intersection = set1.intersection(set2) -- of the two sets
             3c. find my_union = set1.union(set2) -- of the two sets
-            3d. calculate current ratio by dividing: my_current_ration = length of my_intersection / my_union
-        4. Use if statement to check best match by comparing current_ratio with similarity score and the threshold it should go above.
+            3d. calculate current ratio by dividing: my_current_ratio = length of my_intersection / my_union
+        4. Use if conditional to check best match by comparing current_ratio with similarity score and the threshold it should go above.
             4a. if current_ratio > similarity_score AND current_ratio > threshold, update vars to new assignments:
                 4b. similarity_score = current_ratio
                 4b. best_match = potential_match
@@ -81,12 +82,13 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
 
+# main loop
 
 first_interaction = True                                       # flag for initial welcome message
 while True:
     try:
         if first_interaction == True:
-            user_question = input("\n Welcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
+            user_question = input("\nWelcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
         else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
         first_interaction = False                              # set flag to not display welcome msg again.
         user_question_lower = user_question.lower()
@@ -103,7 +105,8 @@ while True:
             answer = response(user_question)
             print(answer)
         else:
-            # LLM API call
+
+            # LLM API call --> UNDERSTAND THIS BETTER!!!
             knowledge_base_string = ""
             for key, value in knowledge_base.items():
                 knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
