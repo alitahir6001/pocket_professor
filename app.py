@@ -105,15 +105,16 @@ while True:
             answer = response(user_question)
             print(answer)
         else:
-            print("DEBUG: No exact match found. Checking for typos...") # Optional debug message
+            print("\nDEBUG: No exact match found. Checking for typos...\n") # Optional debug message
 
             # integrate typo_checker by calling it and passing args it needs to operate.
             best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
             if best_match is not None:                  # if typo match is found
+                print("\nI think you mean...\n")
                 answer = response(best_match)           # reuses response() and prints it.
                 print(answer)
             else:
-                ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? ") # request user input
+                ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
                 if ask_llm.lower() == "yes":
 
                     # LLM API call --> UNDERSTAND THIS BETTER!!!
@@ -122,13 +123,20 @@ while True:
                     for key, value in knowledge_base.items():
                         knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
                     full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
-                    request_data = {"model": "gemma3:latest", "prompt": full_prompt}
-                    response = requests.post("http://localhost:11434/api/generate", json=request_data)
-                    response.raise_for_status()
-                    llm_response = response.json()["response"]
+                    
+                    # Send the request to Ollama
+                    request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
+                    print("\nSending request to LLM...\n")
+                    ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
+
+                    # Receiving the response from Ollama
+                    print("\nReceived response from LLM:\n")
+                    ollama_response.raise_for_status()              # Check for HTTP errors
+
+                    llm_response = ollama_response.json()["response"]
                     print(llm_response)
                 else:
-                    print("OK, I wont ask the LLM!")
+                    print("\nOK, I wont ask the LLM!\n")
 
     except KeyboardInterrupt:
         print("\nOK! See you later!\n")
@@ -141,6 +149,6 @@ while True:
     except ValueError as valErr:
         print(f"Unexpected value error has occurred: {valErr}")
     except AttributeError as attErr:
-        print(f"Unexpected Attribute error occured: {attErr}")
+        print(f"An Unexpected Attribute error occured: {attErr}")
     except Exception as excepErr:
         print(f"Unexpected exception occurred: {excepErr}")
