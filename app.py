@@ -115,18 +115,20 @@ while True:
             else:
                 ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? ") # request user input
                 if ask_llm.lower() == "yes":
-                    # run the LLM API call code block we already wrote
-                
-            # LLM API call --> UNDERSTAND THIS BETTER!!!
-            knowledge_base_string = ""
-            for key, value in knowledge_base.items():
-                knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
-            full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
-            request_data = {"model": "gemma3:latest", "prompt": full_prompt}
-            response = requests.post("http://localhost:11434/api/generate", json=request_data)
-            response.raise_for_status()
-            llm_response = response.json()["response"]
-            print(llm_response)
+
+                    # LLM API call --> UNDERSTAND THIS BETTER!!!
+
+                    knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
+                    for key, value in knowledge_base.items():
+                        knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
+                    full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
+                    request_data = {"model": "gemma3:latest", "prompt": full_prompt}
+                    response = requests.post("http://localhost:11434/api/generate", json=request_data)
+                    response.raise_for_status()
+                    llm_response = response.json()["response"]
+                    print(llm_response)
+                else:
+                    print("OK, I wont ask the LLM!")
 
     except KeyboardInterrupt:
         print("\nOK! See you later!\n")
