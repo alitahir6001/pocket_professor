@@ -88,3 +88,22 @@ except Exception as excepErr:
     print(f"Unexpected exception occured: {excepErr}")
 except Exception as e:
     print(f"An unexpected error occured: {e}")
+
+
+
+
+# Debugging the LLM response 
+# This block below helped me understand why i was getting errors sending my user input to the LLM
+# Helpful print messages outputted the raw response from the LLM
+    # I originally had a var called "response" which was likely confusing the LLM because i also have a
+    # function called "response", which does not have a '.text' attribute.
+print("DEBUG: Sending request to LLM...")
+ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
+print("DEBUG: Received response from LLM.")
+ollama_response.raise_for_status() 
+
+print("--- BEGIN RAW LLM RESPONSE TEXT ---")
+# prints the raw message from LLM
+print(ollama_response.text) # ----> This used to be response.text and it broke the llm response!
+
+print("--- END RAW LLM RESPONSE TEXT ---")
