@@ -105,13 +105,24 @@ while True:
             answer = response(user_question)
             print(answer)
         else:
+            print("DEBUG: No exact match found. Checking for typos...") # Optional debug message
 
+            # integrate typo_checker by calling it and passing args it needs to operate.
+            best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
+            if best_match is not None:                  # if typo match is found
+                answer = response(best_match)           # reuses response() and prints it.
+                print(answer)
+            else:
+                ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? ") # request user input
+                if ask_llm.lower() == "yes":
+                    # run the LLM API call code block we already wrote
+                
             # LLM API call --> UNDERSTAND THIS BETTER!!!
             knowledge_base_string = ""
             for key, value in knowledge_base.items():
                 knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
             full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
-            request_data = {"model": "mistral:latest", "prompt": full_prompt}
+            request_data = {"model": "gemma3:latest", "prompt": full_prompt}
             response = requests.post("http://localhost:11434/api/generate", json=request_data)
             response.raise_for_status()
             llm_response = response.json()["response"]
@@ -127,5 +138,7 @@ while True:
         print(f"Error sending request to Ollama API: {reqErr}")
     except ValueError as valErr:
         print(f"Unexpected value error has occurred: {valErr}")
+    except AttributeError as attErr:
+        print(f"Unexpected Attribute error occured: {attErr}")
     except Exception as excepErr:
         print(f"Unexpected exception occurred: {excepErr}")
