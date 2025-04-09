@@ -133,7 +133,7 @@ while True:
                     print("\nReceived response from LLM:\n")
                     ollama_response.raise_for_status()              # Check for HTTP errors
 
-                    llm_response = ollama_response.json()["response"]
+                    llm_response = ollama_response.json()["response"] # parsed the JSON response from LLM
                     print(llm_response)
                 else:
                     print("\nOK, I wont ask the LLM!\n")
