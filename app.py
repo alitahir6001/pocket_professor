@@ -83,8 +83,8 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
         return f"\nThere was an error with checking the question: {errors}\n"
 
 # main loop
-if __name__ == "__main__":
-    first_interaction = True                                       # flag for initial welcome message
+if __name__ == "__main__":                    # "guarding" the main loop from unittests
+    first_interaction = True                  # flag for initial welcome message
     while True:
         try:
             if first_interaction == True:
