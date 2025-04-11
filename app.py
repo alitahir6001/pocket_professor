@@ -26,9 +26,9 @@ def list_available_questions(knowledge_base):
 
 def response(user_question):
     try:
-        user_question_lower = user_question.lower()
-        for key in knowledge_base.keys():                     # implicit bool to check if user key exists in dict.
-            if user_question_lower == key.lower():            # if user input matches the key...
+        user_question_lower = user_question.lower()           # make user input lowercase
+        for key in knowledge_base.keys():                     # Iterate through dict. Implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():            # if user input matches the lowercased key...
                 return knowledge_base[key]                    # return that question key from the dict.
         else:
             return "\nI didn't recognize the question, can you please try again?\n"
@@ -110,7 +110,7 @@ if __name__ == "__main__":                    # "guarding" the main loop from un
                 # integrate typo_checker by calling it and passing args it needs to operate.
                 best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
                 if best_match is not None:                  # if typo match is found
-                    print("\nI think you mean...\n")
+                    print(f"\nI think you mean... '{best_match}'\n")
                     answer = response(best_match)           # reuses response() and prints it.
                     print(answer)
                 else:
