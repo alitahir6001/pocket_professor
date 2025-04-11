@@ -4,14 +4,39 @@ from knowledge_base import knowledge_base       # Importing the data it uses
 
 class PocketProfessorTests(unittest.TestCase):
     def test_response_exactMatch_and_ignore_case(self):
-        """ Test the response functions exact-matching capability and ignoring case"""
+        """ Test the response function's exact-matching capability and ignoring case """
+        
+        # -- Arrange: Setup what the test needs
+
+        actual_key_in_db = "What is a Variable in Python?"          # Define the actual key (question) from dict
+        input_question = "whAT iS A vaRiABlE in pYthon?"            # Define the input i will pass to test
         try:
-            input_question = "hoW dO i use A FOR loop"
-            expected_answer = knowledge_base["How do I use a for loop?"]
+            expected_answer = knowledge_base[actual_key_in_db]      # Define expected answer     
+        except KeyError as keyErr:
+            # Use self.fail() instead of print for test except blocks.
+            # If key not found:
+            self.fail(f"Test setup error: Key: {actual_key_in_db} not found in knowledge base dictionary - {keyErr}")
 
-        except Exception as excepErr:
-            print (f"An error occured: {excepErr}")
-    pass
+        # -- Act: Execute the actual function call I am testing
+        # -- Assert: Use self.assertEqual() to compare results
 
+        actual_answer = response(input_question)
+        self.assertEqual(expected_answer, actual_answer)
+
+    def test_response_missing_punctuation(self):
+        """ Test the response function's ability to catch missing punctuation. Currently the response function is limited, so this test will fail. """
+
+        actual_key_in_db = "What's a module?"
+        input_question = "wHAts a moDUle"
+        try:
+            expected_answer = knowledge_base[actual_key_in_db]
+        except KeyError as keyErr:
+            self.fail(f"Test setup error: Key: {actual_key_in_db} not found in knowledge base dictionary - {keyErr}")
+
+        actual_answer = response(input_question)
+        self.assertEqual(expected_answer, actual_answer)
+
+
+# runner
 if __name__ == '__main__':
     unittest.main()
