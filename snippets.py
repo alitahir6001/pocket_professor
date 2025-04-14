@@ -1,4 +1,4 @@
-from knowledge_base import knowledge_base
+from modules.knowledge_base import knowledge_base
 import requests
 
 # Creating a function that takes in a question and fetches the answer

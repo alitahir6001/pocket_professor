@@ -1,6 +1,6 @@
 import unittest                                 # Imports from your project
 from app import response                        # Importing the function we want to test
-from knowledge_base import knowledge_base       # Importing the data it uses
+from modules.knowledge_base import knowledge_base       # Importing the data it uses
 
 class PocketProfessorTests(unittest.TestCase):
     def test_response_exactMatch_and_ignore_case(self):
