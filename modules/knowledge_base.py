@@ -13,7 +13,7 @@ knowledge_base["What are the different data types in Python?"] = "Python has sev
 
 knowledge_base["What is Object Orientated Programming in Python?"] = "Object Orientated Programming, or OOP for short, is a programming paradigm that uses classes, and their instantiated objects to structure code."
 
-knowledge_base["What is a module?"] = "A module is just Python file with a .py extension. It is used to help break down large and complex programs into smaller, more manageable files. For example you can create a python module with many different functions, classes, etc., and then import that module into other python files to re-use those blocks of code. A collection of modules usually becomes a library."
+knowledge_base["What's a module?"] = "A module is just Python file with a .py extension. It is used to help break down large and complex programs into smaller, more manageable files. For example you can create a python module with many different functions, classes, etc., and then import that module into other python files to re-use those blocks of code. A collection of modules usually becomes a library."
 
 knowledge_base["What are decorators in Python?"] = """
 

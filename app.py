@@ -1,5 +1,5 @@
 import requests
-from knowledge_base import knowledge_base
+from modules.knowledge_base import knowledge_base
 
 llm_prompt = """
 You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects and provide a specialized learning plan in the style of a college syllabus to fit their needs. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
@@ -26,9 +26,9 @@ def list_available_questions(knowledge_base):
 
 def response(user_question):
     try:
-        user_question_lower = user_question.lower()
-        for key in knowledge_base.keys():                     # implicit bool to check if user key exists in dict.
-            if user_question_lower == key.lower():            # if user input matches the key...
+        user_question_lower = user_question.lower()           # make user input lowercase
+        for key in knowledge_base.keys():                     # Iterate through dict. Implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():            # if user input matches the lowercased key...
                 return knowledge_base[key]                    # return that question key from the dict.
         else:
             return "\nI didn't recognize the question, can you please try again?\n"
@@ -83,72 +83,72 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
         return f"\nThere was an error with checking the question: {errors}\n"
 
 # main loop
+if __name__ == "__main__":                    # "guarding" the main loop from unittests
+    first_interaction = True                  # flag for initial welcome message
+    while True:
+        try:
+            if first_interaction == True:
+                user_question = input("\nWelcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
+            else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
+            first_interaction = False                              # set flag to not display welcome msg again.
+            user_question_lower = user_question.lower()
 
-first_interaction = True                                       # flag for initial welcome message
-while True:
-    try:
-        if first_interaction == True:
-            user_question = input("\nWelcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
-        else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
-        first_interaction = False                              # set flag to not display welcome msg again.
-        user_question_lower = user_question.lower()
-
-        if user_question_lower == "exit" or user_question_lower == "quit":
-            print("\nBye bye!\n")
-            break
-        elif user_question_lower == "list" or user_question_lower == "show all":
-            list_available_questions(knowledge_base)
-        elif user_question_lower == "help":
-            help_message = "\nInstructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
-            print(help_message)
-        elif user_question_lower in [key.lower() for key in knowledge_base]:
-            answer = response(user_question)
-            print(answer)
-        else:
-            print("\nDEBUG: No exact match found. Checking for typos...\n") # Optional debug message
-
-            # integrate typo_checker by calling it and passing args it needs to operate.
-            best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
-            if best_match is not None:                  # if typo match is found
-                print("\nI think you mean...\n")
-                answer = response(best_match)           # reuses response() and prints it.
+            if user_question_lower == "exit" or user_question_lower == "quit":
+                print("\nBye bye!\n")
+                break
+            elif user_question_lower == "list" or user_question_lower == "show all":
+                list_available_questions(knowledge_base)
+            elif user_question_lower == "help":
+                help_message = "\nInstructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
+                print(help_message)
+            elif user_question_lower in [key.lower() for key in knowledge_base]:
+                answer = response(user_question)
                 print(answer)
             else:
-                ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
-                if ask_llm.lower() == "yes":
+                print("\nDEBUG: No exact match found. Checking for typos...\n") # Optional debug message
 
-                    # LLM API call --> UNDERSTAND THIS BETTER!!!
-
-                    knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
-                    for key, value in knowledge_base.items():
-                        knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
-                    full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
-                    
-                    # Send the request to Ollama
-                    request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
-                    print("\nSending request to LLM...\n")
-                    ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
-
-                    # Receiving the response from Ollama
-                    print("\nReceived response from LLM:\n")
-                    ollama_response.raise_for_status()              # Check for HTTP errors
-
-                    llm_response = ollama_response.json()["response"] # parsed the JSON response from LLM
-                    print(llm_response)
+                # integrate typo_checker by calling it and passing args it needs to operate.
+                best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
+                if best_match is not None:                  # if typo match is found
+                    print(f"\nI think you mean... '{best_match}'\n")
+                    answer = response(best_match)           # reuses response() and prints it.
+                    print(answer)
                 else:
-                    print("\nOK, I wont ask the LLM!\n")
+                    ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
+                    if ask_llm.lower() == "yes":
 
-    except KeyboardInterrupt:
-        print("\nOK! See you later!\n")
-        break
-    except EOFError:
-        print("\nEnd of input detected, so I will exit. See you later!\n")
-        break
-    except requests.exceptions.RequestException as reqErr:
-        print(f"Error sending request to Ollama API: {reqErr}")
-    except ValueError as valErr:
-        print(f"Unexpected value error has occurred: {valErr}")
-    except AttributeError as attErr:
-        print(f"An Unexpected Attribute error occured: {attErr}")
-    except Exception as excepErr:
-        print(f"Unexpected exception occurred: {excepErr}")
+                        # LLM API call --> UNDERSTAND THIS BETTER!!!
+
+                        knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
+                        for key, value in knowledge_base.items():
+                            knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
+                        full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
+                        
+                        # Send the request to Ollama
+                        request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
+                        print("\nSending request to LLM...\n")
+                        ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
+
+                        # Receiving the response from Ollama
+                        print("\nReceived response from LLM:\n")
+                        ollama_response.raise_for_status()              # Check for HTTP errors
+
+                        llm_response = ollama_response.json()["response"] # parsed the JSON response from LLM
+                        print(llm_response)
+                    else:
+                        print("\nOK, I wont ask the LLM!\n")
+
+        except KeyboardInterrupt:
+            print("\nOK! See you later!\n")
+            break
+        except EOFError:
+            print("\nEnd of input detected, so I will exit. See you later!\n")
+            break
+        except requests.exceptions.RequestException as reqErr:
+            print(f"Error sending request to Ollama API: {reqErr}")
+        except ValueError as valErr:
+            print(f"Unexpected value error has occurred: {valErr}")
+        except AttributeError as attErr:
+            print(f"An Unexpected Attribute error occured: {attErr}")
+        except Exception as excepErr:
+            print(f"Unexpected exception occurred: {excepErr}")
