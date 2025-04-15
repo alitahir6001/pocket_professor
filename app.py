@@ -1,17 +1,6 @@
 import requests
 from modules.knowledge_base import knowledge_base
 
-llm_prompt = """
-You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects and provide a specialized learning plan in the style of a college syllabus to fit their needs. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
-
-Python Knowledge Base:
-{knowledge_base_string}
-
-User Question: {user_question}
-
-Answer:
-"""
-
 def list_available_questions(knowledge_base):
     try:
         if not knowledge_base:                               # Check if dict. is empty with "not" operator.
