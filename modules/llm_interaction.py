@@ -57,6 +57,12 @@ def query_llm(user_question, knowledge_base):
         print("DEBUG: RETURNING LLM RESPONSE TEXT...")
         return llm_text_response
 
+    #  If any error happens in try block, signal failure of Ollama API request by returning None
     except requests.exceptions.RequestException as reqErr:
         print(f"\n Error during Ollama API request: {reqErr}\n")
         return None
+    
+    except Exception as exceperr:
+        print(f"\nAn unexpected error occured when querying the LLM: {exceperr}\n")
+        return None
+    
