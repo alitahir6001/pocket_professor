@@ -23,30 +23,40 @@ def query_llm(user_question, knowledge_base):
     
     """
     try:
-        # LLM API call --> UNDERSTAND THIS BETTER!!!
-
+        # Format the prompt
         print("DEBUG **** -- Formatting Prompt for the LLM....")
         knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
         for key, value in knowledge_base.items():
             knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
         full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
         
-        # Send the request to Ollama
+        # Send the request to LLM via Ollama API
         request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
         print("\nSending request to LLM...\n")
+
+        # hold the full response object via requests.post
         ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
 
         # Receiving the response from Ollama and checking for HTTP errors
         print("\nReceived response from LLM:\n")
         ollama_response.raise_for_status()
         
-        # Step 1: Parse the JSON from the response object into a Python dictionary
+        # Parse the JSON from the response object into a Python dictionary
         response_data = ollama_response.json()
 
-        # Step 2: Safely get the text string from the dictionary using the key "response"
+        # Safely get the text string from the dictionary using the key "response"
         llm_text_response = response_data.get("response")
 
+        # Check if the JSON parsing extraction worked
+        if llm_text_response is None:
+            print("ERROR: the 'response' key was not found in LLM JSON output")
+            print(f"Full JSON response data: {response_data}")
+            return None
+        
+        # Return successfull result
+        print("DEBUG: RETURNING LLM RESPONSE TEXT...")
         return llm_text_response
-    
-    except Exception(None):
+
+    except requests.exceptions.RequestException as reqErr:
+        print(f"\n Error during Ollama API request: {reqErr}\n")
         return None
