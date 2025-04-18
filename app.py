@@ -1,4 +1,5 @@
 import requests
+from modules.llm_interaction import query_llm
 from modules.knowledge_base import knowledge_base
 
 def list_available_questions(knowledge_base):
@@ -105,25 +106,7 @@ if __name__ == "__main__":                    # "guarding" the main loop from un
                 else:
                     ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
                     if ask_llm.lower() == "yes":
-
-                        # LLM API call --> UNDERSTAND THIS BETTER!!!
-
-                        knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
-                        for key, value in knowledge_base.items():
-                            knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
-                        full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
-                        
-                        # Send the request to Ollama
-                        request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
-                        print("\nSending request to LLM...\n")
-                        ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
-
-                        # Receiving the response from Ollama
-                        print("\nReceived response from LLM:\n")
-                        ollama_response.raise_for_status()              # Check for HTTP errors
-
-                        llm_response = ollama_response.json()["response"] # parsed the JSON response from LLM
-                        print(llm_response)
+                        llm_call = query_llm(user_question, knowledge_base)
                     else:
                         print("\nOK, I wont ask the LLM!\n")
 
