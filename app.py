@@ -72,7 +72,7 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
 
-# main loop
+# Main loop
 if __name__ == "__main__":                    # "guarding" the main loop from unittests
     first_interaction = True                  # flag for initial welcome message
     while True:
@@ -106,7 +106,10 @@ if __name__ == "__main__":                    # "guarding" the main loop from un
                 else:
                     ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
                     if ask_llm.lower() == "yes":
-                        llm_call = query_llm(user_question, knowledge_base)
+                        llm_answer = query_llm(user_question, knowledge_base)
+                        if llm_answer is not None:
+                            print(llm_answer)
+                        
                     else:
                         print("\nOK, I wont ask the LLM!\n")
 
