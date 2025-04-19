@@ -72,6 +72,3 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
 
-# Main loop
-if __name__ == "__main__": 
-    pass
