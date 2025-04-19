@@ -3,6 +3,7 @@ from modules.llm_interaction import query_llm
 from modules.knowledge_base import knowledge_base
 
 def list_available_questions(knowledge_base):
+    """ List all available questions in dictionary """
     try:
         if not knowledge_base:                               # Check if dict. is empty with "not" operator.
             print("\nThe knowledge base is empty.\n")
@@ -15,6 +16,7 @@ def list_available_questions(knowledge_base):
         print(f"\nAn error occurred while listing questions: {errors}\n")
 
 def response(user_question):
+    """ match user question with key in dict."""
     try:
         user_question_lower = user_question.lower()           # make user input lowercase
         for key in knowledge_base.keys():                     # Iterate through dict. Implicit bool to check if user key exists in dict.
@@ -45,7 +47,6 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
         5. Return the best_match (Outside the loop)
 
     """
-
     try:
         best_match = None                               # init best match so far
         similarity_score = 0.0                          # init a score for this similarity.
@@ -71,4 +72,6 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
 
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
-
+    
+if __name__ == "__main__":     # "guarding" the main loop from unittests
+    syllabus_prompt = "\nWelcome to Pocket Professor! I'm your personal academic advisor (or provost), designed to help you create a specialized learning path that aligns with your needs. To get started, what subject matter are you looking to learn about? "
