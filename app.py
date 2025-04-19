@@ -73,5 +73,15 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
     
-if __name__ == "__main__":     # "guarding" the main loop from unittests
-    syllabus_prompt = "\nWelcome to Pocket Professor! I'm your personal academic advisor (or provost), designed to help you create a specialized learning path that aligns with your needs. To get started, what subject matter are you looking to learn about? "
+if __name__ == "__main__":     # guard
+
+    # Get user prompts for generating syllabus
+    advisor_prompt = "\nWelcome to Pocket Professor! I'm your personal academic advisor, designed to help you create a specialized learning path that aligns with your needs. To get started, what subject matter are you looking to learn about? "
+    
+    subject = input(advisor_prompt)
+
+    difficulty_level = input(f"\nWonderful! I'm excited to help you on your {subject} learning journey! I want to make this guide unique to you, so please tell me your current level of understanding of the material. Are you a beginner in learning about {subject}? Or do you have some background and want an intermediary approach? Or are you looking for a more advanced understanding of {subject}? ")
+
+    learning_goal = input(f"\nJust curious, is there a goal you have in mind to learn about {subject}? It's ok if you don't have one right now, I want to make sure I tailor your syllabus in a way you work toward something you want to achieve! ")
+    
+    time = input(f"\nHow many hours per week do you think you'll be willing to spend on learning {subject}? Don't worry if you're not sure.")
