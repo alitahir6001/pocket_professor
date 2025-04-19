@@ -1,4 +1,3 @@
-import requests
 from modules.llm_interaction import query_llm
 from modules.knowledge_base import knowledge_base
 

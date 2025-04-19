@@ -1,4 +1,5 @@
-import modules.llm_interaction
+from modules.llm_interaction import query_llm
+import app
 
 def generate_syllabus(subject, difficulty, time, goal):    # What does this func. need to generate syllabus?
     """
@@ -9,5 +10,4 @@ def generate_syllabus(subject, difficulty, time, goal):    # What does this func
         - create prompt--> comprehensive system prompt to generate learning path/syllabus.
         - call LLM-->   display the generated learning path, error out if not.
     """
-
-pass        
+    
