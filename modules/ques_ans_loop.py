@@ -1,6 +1,8 @@
 # This is the original "main loop", I created. 
 # Written for the initial question/answer loop with user based on knowledge base dict.
 
+from app import *
+
 if __name__ == "__main__":                    # "guarding" the main loop from unittests
     first_interaction = True                  # flag for initial welcome message
     while True:
