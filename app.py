@@ -1,16 +1,6 @@
 import requests
+from modules.llm_interaction import query_llm
 from modules.knowledge_base import knowledge_base
-
-llm_prompt = """
-You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects and provide a specialized learning plan in the style of a college syllabus to fit their needs. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
-
-Python Knowledge Base:
-{knowledge_base_string}
-
-User Question: {user_question}
-
-Answer:
-"""
 
 def list_available_questions(knowledge_base):
     try:
@@ -82,7 +72,7 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
 
-# main loop
+# Main loop
 if __name__ == "__main__":                    # "guarding" the main loop from unittests
     first_interaction = True                  # flag for initial welcome message
     while True:
@@ -116,25 +106,10 @@ if __name__ == "__main__":                    # "guarding" the main loop from un
                 else:
                     ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
                     if ask_llm.lower() == "yes":
-
-                        # LLM API call --> UNDERSTAND THIS BETTER!!!
-
-                        knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
-                        for key, value in knowledge_base.items():
-                            knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
-                        full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
+                        llm_answer = query_llm(user_question, knowledge_base)
+                        if llm_answer is not None:
+                            print(llm_answer)
                         
-                        # Send the request to Ollama
-                        request_data = {"model": "gemma3:latest", "prompt": full_prompt, "stream": False}
-                        print("\nSending request to LLM...\n")
-                        ollama_response = requests.post("http://localhost:11434/api/generate", json=request_data)
-
-                        # Receiving the response from Ollama
-                        print("\nReceived response from LLM:\n")
-                        ollama_response.raise_for_status()              # Check for HTTP errors
-
-                        llm_response = ollama_response.json()["response"] # parsed the JSON response from LLM
-                        print(llm_response)
                     else:
                         print("\nOK, I wont ask the LLM!\n")
 
