@@ -49,8 +49,8 @@ if __name__ == "__main__":                    # "guarding" the main loop from un
         except EOFError:
             print("\nEnd of input detected, so I will exit. See you later!\n")
             break
-        except requests.exceptions.RequestException as reqErr:
-            print(f"Error sending request to Ollama API: {reqErr}")
+        # except requests.exceptions.RequestException as reqErr:
+        #     print(f"Error sending request to Ollama API: {reqErr}")
         except ValueError as valErr:
             print(f"Unexpected value error has occurred: {valErr}")
         except AttributeError as attErr:
