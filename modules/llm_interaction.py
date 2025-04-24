@@ -34,8 +34,9 @@ def query_llm(user_question, knowledge_base):
     try:
         # Format the prompt
         print("DEBUG **** -- Formatting Prompt for the LLM....")
+        
         knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
-        for key, value in knowledge_base.items():
+        for key, value in knowledge_base.items():       # loop through all k:v pairs in dict.
             knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
         full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
         
