@@ -1,5 +1,7 @@
 from modules.llm_interaction import query_llm
+from modules.generate_syllabus import generate_syllabus
 from modules.knowledge_base import knowledge_base
+import sys
 
 def list_available_questions(knowledge_base):
     """ List all available questions in dictionary """
@@ -79,13 +81,22 @@ if __name__ == "__main__":     # guard
         
         subject = input(advisor_prompt).lower()
 
-        difficulty_level = input(f"\nWonderful! I'm excited to help you on your {subject} learning journey! I want to make this guide unique to you, so please tell me your current level of understanding of the material. Are you a beginner in learning about {subject}? Or do you have some background and want an intermediary approach? Or are you looking for a more advanced understanding of {subject}? ")
+        difficulty_level = input(f"\nWonderful! I'm excited to help you on your {subject} learning journey! I want to make this guide unique to you, so please tell me your current level of understanding of the material. Are you a beginner in learning about {subject}? Or do you have some background and want an intermediary approach? Or are you looking for a more advanced understanding of {subject}? ").lower()
 
-        learning_goal = input(f"\nJust curious, is there a goal you have in mind to learn about {subject}? It's ok if you don't have one right now: ")
+        learning_goal = input(f"\nJust curious, is there a goal you have in mind to learn about {subject}? It's ok if you don't have one right now: ").lower()
         
-        time = input(f"\nHow many hours per week do you think you'll be willing to spend on learning {subject}? Don't worry if you're not sure: ")
+        time = input(f"\nHow many hours per week do you think you'll be willing to spend on learning {subject}? Don't worry if you're not sure: ").lower()
 
-# Exit error handling
+        # ToDo: try an exit condition for this portion
+        # if subject or difficulty_level or learning_goal or time == "exit" or input.lower() == "quit":
+        #         print("\nBye bye!\n")
+        #         sys.exit()
+
+        # LLM prompt to generate syllabus using user info
+        syllabus_output = generate_syllabus(subject, difficulty_level, learning_goal, time)
+        if syllabus_output is not None:
+            print(syllabus_output)
+
     except KeyboardInterrupt:
         print("\nOK! See you later!\n")
     except EOFError:
