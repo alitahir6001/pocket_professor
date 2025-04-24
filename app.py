@@ -1,8 +1,8 @@
-import requests
 from modules.llm_interaction import query_llm
 from modules.knowledge_base import knowledge_base
 
 def list_available_questions(knowledge_base):
+    """ List all available questions in dictionary """
     try:
         if not knowledge_base:                               # Check if dict. is empty with "not" operator.
             print("\nThe knowledge base is empty.\n")
@@ -15,6 +15,7 @@ def list_available_questions(knowledge_base):
         print(f"\nAn error occurred while listing questions: {errors}\n")
 
 def response(user_question):
+    """ match user question with key in dict."""
     try:
         user_question_lower = user_question.lower()           # make user input lowercase
         for key in knowledge_base.keys():                     # Iterate through dict. Implicit bool to check if user key exists in dict.
@@ -45,7 +46,6 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
         5. Return the best_match (Outside the loop)
 
     """
-
     try:
         best_match = None                               # init best match so far
         similarity_score = 0.0                          # init a score for this similarity.
@@ -71,59 +71,28 @@ def typo_checker(user_question, know_base_keys, threshold=0.8):
 
     except Exception as errors:
         return f"\nThere was an error with checking the question: {errors}\n"
+    
+if __name__ == "__main__":     # guard
+    try:
+        # Get user prompts for generating syllabus
+        advisor_prompt = "\nWelcome to Pocket Professor! I'm your personal academic advisor, designed to help you create a specialized learning path that aligns with your needs. To get started, what subject matter are you looking to learn about? "
+        
+        subject = input(advisor_prompt).lower()
 
-# Main loop
-if __name__ == "__main__":                    # "guarding" the main loop from unittests
-    first_interaction = True                  # flag for initial welcome message
-    while True:
-        try:
-            if first_interaction == True:
-                user_question = input("\nWelcome to Pocket Professor! Ask a question (or type 'exit' or 'quit' to stop). Type 'help' for instructions: ")
-            else: user_question = input("\nWhat's next? Submit a question or type 'help' for instructions, or 'quit' to leave: ")
-            first_interaction = False                              # set flag to not display welcome msg again.
-            user_question_lower = user_question.lower()
+        difficulty_level = input(f"\nWonderful! I'm excited to help you on your {subject} learning journey! I want to make this guide unique to you, so please tell me your current level of understanding of the material. Are you a beginner in learning about {subject}? Or do you have some background and want an intermediary approach? Or are you looking for a more advanced understanding of {subject}? ")
 
-            if user_question_lower == "exit" or user_question_lower == "quit":
-                print("\nBye bye!\n")
-                break
-            elif user_question_lower == "list" or user_question_lower == "show all":
-                list_available_questions(knowledge_base)
-            elif user_question_lower == "help":
-                help_message = "\nInstructions: \n (1) Type 'list' or 'show all' to see a list of available questions \n (2) Type in the question you want answered \n (3) type 'quit' to leave the program."
-                print(help_message)
-            elif user_question_lower in [key.lower() for key in knowledge_base]:
-                answer = response(user_question)
-                print(answer)
-            else:
-                print("\nDEBUG: No exact match found. Checking for typos...\n") # Optional debug message
+        learning_goal = input(f"\nJust curious, is there a goal you have in mind to learn about {subject}? It's ok if you don't have one right now: ")
+        
+        time = input(f"\nHow many hours per week do you think you'll be willing to spend on learning {subject}? Don't worry if you're not sure: ")
 
-                # integrate typo_checker by calling it and passing args it needs to operate.
-                best_match = typo_checker(user_question_lower, [key.lower() for key in knowledge_base.keys()])
-                if best_match is not None:                  # if typo match is found
-                    print(f"\nI think you mean... '{best_match}'\n")
-                    answer = response(best_match)           # reuses response() and prints it.
-                    print(answer)
-                else:
-                    ask_llm = input("\nThere was no match for submission, would you like to ask the LLM? (Yes/No) ") # request user input
-                    if ask_llm.lower() == "yes":
-                        llm_answer = query_llm(user_question, knowledge_base)
-                        if llm_answer is not None:
-                            print(llm_answer)
-                        
-                    else:
-                        print("\nOK, I wont ask the LLM!\n")
-
-        except KeyboardInterrupt:
-            print("\nOK! See you later!\n")
-            break
-        except EOFError:
-            print("\nEnd of input detected, so I will exit. See you later!\n")
-            break
-        except requests.exceptions.RequestException as reqErr:
-            print(f"Error sending request to Ollama API: {reqErr}")
-        except ValueError as valErr:
-            print(f"Unexpected value error has occurred: {valErr}")
-        except AttributeError as attErr:
-            print(f"An Unexpected Attribute error occured: {attErr}")
-        except Exception as excepErr:
-            print(f"Unexpected exception occurred: {excepErr}")
+# Exit error handling
+    except KeyboardInterrupt:
+        print("\nOK! See you later!\n")
+    except EOFError:
+        print("\nEnd of input detected, so I will exit. See you later!\n")
+    except ValueError as valErr:
+        print(f"Unexpected value error has occurred: {valErr}")
+    except AttributeError as attErr:
+        print(f"An Unexpected Attribute error occured: {attErr}")
+    except Exception as excepErr:
+        print(f"Unexpected exception occurred: {excepErr}")

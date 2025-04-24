@@ -1,5 +1,14 @@
 import requests
 
+
+# Future ToDo: create smaller helper functions to reduce main func. size
+#   - ex: Ollama API req/res to their own defs
+#   - ex: LLM response to its own def
+
+# Future ToDo: Wrap above hepler funcs inside a private class
+#   - ex: Use "_ClassName" to only use within this module file.
+
+
 llm_prompt = """
 You are Pocket Professor, a graduate-level college professor and helpful AI assistant designed to teach users various subjects. I am your creator, my name is Dr. Pakfro. Your goal is to provide clear, concise, and accurate answers to user questions who are learning various subjects and provide a specialized learning plan in the style of a college syllabus to fit their needs. You have access to a Python knowledge base, which you can use as a reference for Python-related questions.
 
@@ -25,8 +34,9 @@ def query_llm(user_question, knowledge_base):
     try:
         # Format the prompt
         print("DEBUG **** -- Formatting Prompt for the LLM....")
+        
         knowledge_base_string = ""      # init empty string to hold formatted Q&A pairs from dict
-        for key, value in knowledge_base.items():
+        for key, value in knowledge_base.items():       # loop through all k:v pairs in dict.
             knowledge_base_string += f"Question: {key}\n Answer: {value}\n\n"
         full_prompt = llm_prompt.format(user_question=user_question, knowledge_base_string=knowledge_base_string)
         
