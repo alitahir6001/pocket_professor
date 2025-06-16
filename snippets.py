@@ -1,29 +1,35 @@
-from modules.knowledge_base import knowledge_base
-import requests
+# **** THESE ARE LEFTOVER AND OLD CODE BLOCKS FROM V.0.01 OF THE APP - THE CLI QUESTION AND ANSWER APP
 
 # Creating a function that takes in a question and fetches the answer
     
 # method to handle question/answer interaction ONLY
 def response(user_question):
+    """ match user question with key in dict."""
     try:
-        user_question = user_question.lower()     # first, take user input and make it lowercase
-        for key in knowledge_base.keys():         # then iterate through the keys in the dictionary using .keys()
-            if user_question == key.lower():      # compare the lower case question with a lower cased key
-                return knowledge_base[key]        # return the dictionary[key] (that has already been lower cased)
-        return "\nI didn't recognize the question, can you please try again?\n" 
-    except(TypeError, AttributeError):
-        return "\nSorry I didn't recognize that input, can you please try again?\n"
-    except Exception as error:
-        return f"\nAn unexpected error caught by Python has occurred: {error}\n"
+        user_question_lower = user_question.lower()           # make user input lowercase
+        for key in knowledge_base.keys():                     # Iterate through dict. Implicit bool to check if user key exists in dict.
+            if user_question_lower == key.lower():            # if user input matches the lowercased key...
+                return knowledge_base[key]                    # return that question key from the dict.
+        else:
+            return "\nI didn't recognize the question, can you please try again?\n"
+    except Exception as errors:                                # catch any exceptions as "errors"
+        return f"\nAn error occurred while processing the response: {errors}\n"   
     
 
 # method to list all keys of the knowledge_base dict.               
 def list_available_questions(knowledge_base):
+    """ List all available questions in dictionary """
     try:
-        for key in knowledge_base.keys():
-            print(key)
-    except AttributeError:
-        print("\nInvalid input. Please provide a dictionary.\n")
+        if not knowledge_base:                               # Check if dict. is empty with "not" operator.
+            print("\nThe knowledge base is empty.\n")
+            return                                           # Exit w/ empty return if dictonary is empty.
+
+        print("Available questions:")
+        for question in knowledge_base.keys():
+            print(f"- {question}")                           # adds hyphen when printing each question.
+    except Exception as errors:
+        print(f"\nAn error occurred while listing questions: {errors}\n")
+
 
 # "Main Loop" - infinite loop to repeat prompt for user question. Handles ongoing interaction with user
 while True:
@@ -107,3 +113,52 @@ print("--- BEGIN RAW LLM RESPONSE TEXT ---")
 print(ollama_response.text) # ----> This used to be response.text and it broke the llm response!
 
 print("--- END RAW LLM RESPONSE TEXT ---")
+
+
+
+# JACCARD SIMILARITY ALGO - AKA TYPO CHECKER
+
+# Similarity algorithm
+def typo_checker(user_question, know_base_keys, threshold=0.8):
+    """
+    Goal: find key in dict. most similar to user input. Must be above a certain threshold:
+        1. Init placeholder values for best match and a score for that similarity (Before the loop).
+        2. Iterate through keys of dictionary. 
+        3. Calculate similarity for current key being examined. Use vars to hold values (Inside the loop).
+            3a. Create set() 's for each string to compare (ex: user input string vs key string)
+            3b. find my_intersection = set1.intersection(set2) -- of the two sets
+            3c. find my_union = set1.union(set2) -- of the two sets
+            3d. calculate current ratio by dividing: my_current_ratio = length of my_intersection / my_union
+        4. Use if conditional to check best match by comparing current_ratio with similarity score and the threshold it should go above.
+            4a. if current_ratio > similarity_score AND current_ratio > threshold, update vars to new assignments:
+                4b. similarity_score = current_ratio
+                4b. best_match = potential_match
+            4c. This will only execute if the check above is True. If not, nothing variable assignments will be updated.
+        5. Return the best_match (Outside the loop)
+
+    """
+    try:
+        best_match = None                               # init best match so far
+        similarity_score = 0.0                          # init a score for this similarity.
+        for potential_match in know_base_keys:          # main loop of typo_checker. Iterate thru list of keys.
+            userInputSet = set(user_question)                            # create a set for each string (user, and dict. key)
+            potentialSet = set(potential_match)
+            matching_vals = userInputSet.intersection(potentialSet)      # collect all unique chars within both sets
+            union_set = userInputSet.union(potentialSet)                 # combine all unique chars into new set
+            if len(union_set) > 0:                                       # if set is not empty...
+
+                # calculate current_ratio: length of all matching chars in user question with all matching chars of the ditionary key
+                current_ratio = len(matching_vals) / len(union_set) 
+            else:
+                current_ratio = 0.0                     # if both strings were empty, they have no similarity to each other
+                
+            # ensure the current match is strictly better than the best one you found before
+            if current_ratio > similarity_score and current_ratio >= threshold:     # if it is...
+                similarity_score = current_ratio                                    # update the best score and, 
+                best_match = potential_match                                        # update the best match
+        
+        # tell the function to return latest greatest best match
+        return best_match
+
+    except Exception as errors:
+        return f"\nThere was an error with checking the question: {errors}\n"
