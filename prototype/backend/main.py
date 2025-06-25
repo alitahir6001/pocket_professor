@@ -11,7 +11,7 @@ app = FastAPI(title="Pocket Professor API", version="1.0.0")
 # CORS middleware to allow your GitHub Pages frontend to call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://pakfro.dev", "http://localhost:3000", "http://127.0.0.1:3000"],  # Add your domain
+    allow_origins=["https://*pakfro.dev", "http://localhost:3000", "http://127.0.0.1:3000",],  # Add your domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
