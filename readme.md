@@ -19,7 +19,19 @@ As of June 16th 2025:
 Godspeed, me!
 
 
-TODO: create a polished "version 0.01" of the app that had the original question/answer loop, using the knowledge base dictionary, jaccard similarity algo to check for typos, and THEN calls the LLM if the user wanted to ask a question outside of the knowledge base dictionary. <!-->
+TODO: create a polished "version 0.01" of the app that had the original question/answer loop, using the knowledge base dictionary, jaccard similarity algo to check for typos, and THEN calls the LLM if the user wanted to ask a question outside of the knowledge base dictionary. 
+
+💡 Feature Idea: Consider adding a "just in time" learning feature, which only gives the syllabus/user the material they need to learn and understand for THAT lesson/week, etc. Most people try to learn too much, too early, which leads to information overload and poor retention.
+  - Consider adding a section of the syllabus that applies the learning they are doing in a realistic and practical way, outside of just exercises. Real world examples would be best.
+  - if there's nothing the user needs to learn urgently, only then consider broader universally acceptable concepts/ 
+💡 Feature Idea: Something that helps the user take notes as they go.
+💡 Feature Idea: Agent that adds "study time" to their Google Calendar for them once the syllabus and web scraping agent find the relevant material for them. 
+  - Def of done: Syllabus created, agent scouts out relevant material based on that syllabus, and adds blocks of time to their calendar based on their weekly hour commitment.
+  - All the user should do is wake up, get an alert on their phone it's time to start studying, and have my app show them the relevant material for the day.
+💡 Feature Idea: Github API integration that creates repos with starter code (and readme) for the user if they're learning tech.
+💡 Feature Idea - Market-driven gap analysis is brilliant - This is real-time competitive intelligence that no chatbot can provide. When you tell an investor "we scrape job listings and tell users what skills they're missing," that's a legitimate business model.
+
+<!-->
 
 
 # 📚 Pocket Professor
