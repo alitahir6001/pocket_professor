@@ -361,55 +361,74 @@
             document.getElementById('timeCommitment').value = example.timeCommitment;
         }
 
-        // Mock API call - replace with your actual backend
+// Real API call to your FastAPI backend
         async function generateSyllabus(data) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            const response = await fetch('http://localhost:8000/generate-curriculum', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: data.subject,
+                    skill_level: data.difficulty,
+                    learning_goal: data.goal,
+                    time_commitment: extractHours(data.timeCommitment)
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return formatCurriculumResponse(result);
+        }
+
+        // Helper function to extract hours from timeCommitment
+        function extractHours(timeCommitment) {
+            if (timeCommitment.includes('2-3')) return '3';
+            if (timeCommitment.includes('4-6')) return '5';
+            if (timeCommitment.includes('7-10')) return '8';
+            if (timeCommitment.includes('10+')) return '12';
+            return '5';
+        }
+
+        // Format the JSON response into readable text
+        function formatCurriculumResponse(curriculum) {
+            let formatted = `# ${curriculum.subject} Learning Plan\n\n`;
+            formatted += `**Duration:** ${curriculum.total_weeks} weeks\n\n`;
             
-            // Mock response - replace with actual API call
-            return `# ${data.subject} Learning Plan
-
-## Overview
-This ${data.timeCommitment.toLowerCase()} per week learning plan is designed for a ${data.difficulty} learner looking to ${data.goal}.
-
-## Week 1-2: Foundation
-- Introduction to ${data.subject} fundamentals
-- Setting up development environment
-- Basic concepts and terminology
-- Hands-on exercises (2-3 hours)
-- Practice projects (1-2 hours)
-
-## Week 3-4: Core Concepts
-- Deep dive into essential ${data.subject} features
-- Building your first real project
-- Best practices and common patterns
-- Code reviews and debugging techniques
-
-## Week 5-6: Intermediate Skills
-- Advanced ${data.subject} concepts
-- Integration with other technologies
-- Performance optimization
-- Testing and debugging strategies
-
-## Week 7-8: Real-World Application
-- Capstone project development
-- Code review and refinement
-- Portfolio preparation
-- Next steps and continued learning
-
-## Resources
-- Recommended books and tutorials
-- Online communities and forums
-- Practice platforms and challenges
-- Portfolio project ideas
-
-## Success Metrics
-- Complete 2-3 hands-on projects
-- Build a portfolio showcasing your skills
-- Join relevant online communities
-- Apply for positions or certifications
-
-*This syllabus is tailored to your ${data.difficulty} level and ${data.goal} objective.*`;
+            if (curriculum.prerequisites && curriculum.prerequisites.length > 0) {
+                formatted += `## Prerequisites\n`;
+                curriculum.prerequisites.forEach(prereq => {
+                    formatted += `- ${prereq}\n`;
+                });
+                formatted += '\n';
+            }
+            
+            curriculum.modules.forEach(module => {
+                formatted += `## Week ${module.week}: ${module.title}\n`;
+                formatted += `**Estimated Hours:** ${module.estimated_hours}\n\n`;
+                
+                if (module.topics && module.topics.length > 0) {
+                    formatted += `**Topics:**\n`;
+                    module.topics.forEach(topic => {
+                        formatted += `- ${topic}\n`;
+                    });
+                    formatted += '\n';
+                }
+                
+                if (module.resources && module.resources.length > 0) {
+                    formatted += `**Resources:**\n`;
+                    module.resources.forEach(resource => {
+                        formatted += `- ${resource}\n`;
+                    });
+                    formatted += '\n';
+                }
+                formatted += '---\n\n';
+            });
+            
+            return formatted;
         }
 
         form.addEventListener('submit', async (e) => {
