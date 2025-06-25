@@ -24,12 +24,27 @@ TODO: create a polished "version 0.01" of the app that had the original question
 💡 Feature Idea: Consider adding a "just in time" learning feature, which only gives the syllabus/user the material they need to learn and understand for THAT lesson/week, etc. Most people try to learn too much, too early, which leads to information overload and poor retention.
   - Consider adding a section of the syllabus that applies the learning they are doing in a realistic and practical way, outside of just exercises. Real world examples would be best.
   - if there's nothing the user needs to learn urgently, only then consider broader universally acceptable concepts/ 
+
 💡 Feature Idea: Something that helps the user take notes as they go.
+
 💡 Feature Idea: Agent that adds "study time" to their Google Calendar for them once the syllabus and web scraping agent find the relevant material for them. 
   - Def of done: Syllabus created, agent scouts out relevant material based on that syllabus, and adds blocks of time to their calendar based on their weekly hour commitment.
   - All the user should do is wake up, get an alert on their phone it's time to start studying, and have my app show them the relevant material for the day.
+
 💡 Feature Idea: Github API integration that creates repos with starter code (and readme) for the user if they're learning tech.
+
 💡 Feature Idea - Market-driven gap analysis is brilliant - This is real-time competitive intelligence that no chatbot can provide. When you tell an investor "we scrape job listings and tell users what skills they're missing," that's a legitimate business model.
+
+💡 Feature Idea: Address Motivation issue by tracking hours completed. Be like "20 hours completed = 1 college credit" or something like that. 
+  - How should I address the "what should i do now?" outside of just "here is your weekly learning goal."
+  - ** Motivation issues are usually tied to curricula issues. If the shit is boring, they wont want to continue. Make it not boring.
+
+💡 Feature Idea - Add a "referesher" note that briefly explains where the user were when they left off
+
+⭐💡 Feature Idea - Intelligent adaptation: Somehow, the app learns about the user as the user continues to learn. The more they use the app, the more it learns.
+  - If user is away for multiple days, remind them of where they werre
+  - Suggest easier or shorter tasks to rebuild momentum
+  - "You are x% complete toward your certification/test/career goal
 
 <!-->
 
