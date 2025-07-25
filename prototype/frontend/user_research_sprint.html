@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdTech User Research Action Plan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .week-section {
+            margin-bottom: 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .week-header {
+            padding: 20px 30px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .week-1 .week-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .week-2 .week-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .week-3 .week-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .week-4 .week-header {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+        
+        .special-section .week-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .week-content {
+            background: #f8f9ff;
+            padding: 30px;
+        }
+        
+        .subsection {
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .subsection h4 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subsection h5 {
+            color: #555;
+            font-size: 1rem;
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+        }
+        
+        .task-list {
+            list-style: none;
+            margin: 10px 0;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .task-item:hover {
+            background-color: #f0f4ff;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #4facfe;
+            border-radius: 4px;
+            margin-right: 12px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox:hover {
+            background-color: rgba(74, 172, 254, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .checkbox.checked {
+            background-color: #4facfe;
+            color: white;
+        }
+        
+        .task-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .power-questions {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left-color: #e17055;
+        }
+        
+        .success-metrics {
+            background: linear-gradient(135deg, #d1f2a5 0%, #effab4 100%);
+            border-left-color: #00b894;
+        }
+        
+        .red-flags {
+            background: linear-gradient(135deg, #ffb3b3 0%, #ffcccc 100%);
+            border-left-color: #e74c3c;
+        }
+        
+        .budget-box {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+            border: 2px solid #27ae60;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .budget-box h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        
+        .total-budget {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #27ae60;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .next-action {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .week-content {
+                padding: 20px;
+            }
+            
+            .subsection {
+                padding: 15px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .week-section {
+                page-break-inside: avoid;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 EdTech User Research Sprint</h1>
+            <p>4-Week Accelerated Action Plan for Career-Switching App</p>
+        </div>
+        
+        <div class="content">
+            <div class="week-section week-1">
+                <div class="week-header">
+                    <span class="emoji">⚡</span> Week 1: Foundation Setup & Initial Interviews (Days 1-7)
+                </div>
+                <div class="week-content">
+                    <div class="subsection">
+                        <h4><span class="emoji">🎯</span> Days 1-2: Quick Setup & Immediate Outreach</h4>
+                        
+                        <h5>Infrastructure (Complete in 4 hours)</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Set up Calendly with 20 and 45-minute slots</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Set up Miro journey mapping template</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Install analytics on demo</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Create interview guide template</div>
+                            </li>
+                        </ul>
+                        
+                        <h5>Immediate User Recruitment (Complete by Day 2)</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Post in 3 Reddit subs simultaneously (r/careerguidance, r/careerchange, r/ITCareerQuestions)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Join 3 Facebook career change groups and post immediately</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Message 10 people in your network for referrals</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Post on personal social media asking for career switcher connections</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">🎤</span> Days 3-7: First Wave Interviews (Target: 8-10 interviews)</h4>
+                        
+                        <h5>Quick Interview Strategy</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Book interviews within 24-48 hours of contact</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Offer same-day/next-day slots for eager participants</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Mix: 3 currently unhappy workers, 3 successful switchers, 2 failed/stalled switchers</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Keep to 20 minutes max to get more yes responses</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Record everything and take minimal notes during calls</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection power-questions">
+                        <h4><span class="emoji">💡</span> Power Questions (Ask these in EVERY interview):</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">"What's the single biggest thing stopping you from switching careers right now?"</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">"Walk me through your last attempt to learn a new skill - what happened?"</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">"If I could solve one problem for career switchers, what should it be?"</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="week-section week-2">
+                <div class="week-header">
+                    <span class="emoji">🔍</span> Week 2: Demo Testing + Journey Mapping (Days 8-14)
+                </div>
+                <div class="week-content">
+                    <div class="subsection">
+                        <h4><span class="emoji">🖥️</span> Days 8-10: Rapid Demo Testing (Target: 8 users, 30 min each)</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Recruit directly from Week 1 interviewees (they're already warmed up)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Use screen sharing, ask them to think aloud</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Focus only on: What confuses them? Where do they drop off? What excites them?</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Synthesize findings after each day</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">🗺️</span> Days 11-14: Condensed Journey Mapping (Target: 4 sessions, 45 min each)</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Select best 4 users from previous interviews</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Use Miro to map their career switch journey in real-time</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Focus on: emotional low points, resource gaps, moments they almost quit</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Identify the 2-3 most critical "bridge" moments your app should address</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="week-section week-3">
+                <div class="week-header">
+                    <span class="emoji">🏆</span> Week 3: Competitive Intelligence + Real-World Context (Days 15-21)
+                </div>
+                <div class="week-content">
+                    <div class="subsection">
+                        <h4><span class="emoji">⚔️</span> Days 15-17: Speed Competitor Analysis</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Pick 2 main competitors (not 4)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Recruit 4 users, give them $30 each (lower amount, faster commitment)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Give them 3 days max to try competitors</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">15-minute debrief calls focusing on: "What did they do better than current solutions?"</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Look for gaps, not features to copy</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">📚</span> Days 18-21: Learning Context Deep-Dive</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Ask 6 users to document 3 days of learning attempts (not a full week)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Focus on: What time of day? What device? What interrupts them? What motivates continuation?</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Text/WhatsApp check-ins instead of formal surveys</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Quick 10-minute wrap-up calls</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="week-section week-4">
+                <div class="week-header">
+                    <span class="emoji">🎯</span> Week 4: Synthesis + Validation (Days 22-28)
+                </div>
+                <div class="week-content">
+                    <div class="subsection">
+                        <h4><span class="emoji">🔬</span> Days 22-24: Data Synthesis Sprint</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Block out 6 hours to analyze all interviews</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Create 2-3 user personas maximum</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Identify top 3 pain points that emerged across ALL research</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Map these to potential app features/solutions</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">✅</span> Days 25-26: Rapid Validation</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Create simple landing page or survey with your key hypotheses</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Send to all research participants + broader demo user base</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Ask direct questions: "Would you pay $X for this solution?" "How often would you use this?"</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Get responses within 48 hours</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">🚀</span> Days 27-28: Strategy & Next Steps</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Define your minimum viable feature set based on research</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Prioritize development roadmap</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Plan user acquisition strategy based on what worked in recruitment</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Set up ongoing feedback loop with 5-8 power users</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="week-section special-section">
+                <div class="week-header">
+                    <span class="emoji">⚡</span> ACCELERATION TACTICS
+                </div>
+                <div class="week-content">
+                    <div class="subsection">
+                        <h4><span class="emoji">🏃‍♂️</span> Recruitment Shortcuts</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Offer higher incentives for faster response ($30-40 vs $25)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Use existing demo users as referral sources</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Post in multiple channels simultaneously</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Accept phone interviews if people prefer</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4><span class="emoji">🔍</span> Research Shortcuts</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Combine interview types (ask journey questions during demo testing)</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Use templates and standardized questions religiously</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Record everything, transcribe later with AI tools</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Focus on patterns after every 3-4 interviews</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="week-section special-section">
+                <div class="week-header">
+                    <span class="emoji">📊</span> SUCCESS METRICS & RED FLAGS
+                </div>
+                <div class="week-content">
+                    <div class="subsection success-metrics">
+                        <h4><span class="emoji">✅</span> Weekly Success Indicators</h4>
+                        
+                        <h5>Week 1 Success:</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">8+ interviews completed</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">20+ new demo users</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">3 clear pain points identified</div>
+                            </li>
+                        </ul>
+                        
+                        <h5>Week 2 Success:</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">8+ demo tests completed</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">4 journey maps completed</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Clear understanding of where your app fits in user workflow</div>
+                            </li>
+                        </ul>
+                        
+                        <h5>Week 3 Success:</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Competitor gaps identified</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Learning context patterns clear</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Feature priority list drafted</div>
+                            </li>
+                        </ul>
+                        
+                        <h5>Week 4 Success:</h5>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">User personas defined</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">MVP features validated</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Next 30-day development plan ready</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection red-flags">
+                        <h4><span class="emoji">🚩</span> Red Flags to Watch For</h4>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Users say "it's cool but I don't have time"</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Can't identify when/where they'd use your app</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Learning method doesn't match their preferences</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Time commitment unrealistic for their lifestyle</div>
+                            </li>
+                            <li class="task-item">
+                                <div class="checkbox"></div>
+                                <div class="task-text">Can't see clear path from your app to career success</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="budget-box">
+                <h4><span class="emoji">💰</span> Budget Breakdown (4-Week Version)</h4>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <div class="checkbox"></div>
+                        <div class="task-text">Interview incentives: $35 × 15 people = <span class="highlight">$525</span></div>
+                    </li>
+                    <li class="task-item">
+                        <div class="checkbox"></div>
+                        <div class="task-text">Demo testing: $25 × 8 people = <span class="highlight">$200</span></div>
+                    </li>
+                    <li class="task-item">
+                        <div class="checkbox"></div>
+                        <div class="task-text">Journey mapping: $40 × 4 people = <span class="highlight">$160</span></div>
+                    </li>
+                    <li class="task-item">
+                        <div class="checkbox"></div>
+                        <div class="task-text">Competitor testing: $30 × 4 people = <span class="highlight">$120</span></div>
+                    </li>
+                    <li class="task-item">
+                        <div class="checkbox"></div>
+                        <div class="task-text">Tools: <span class="highlight">$50</span></div>
+                    </li>
+                </ul>
+                <div class="total-budget">💎 Total Investment: ~$1,055</div>
+            </div>
+            
+            <div class="next-action">
+                <span class="emoji">🎯</span> <strong>NEXT ACTION:</strong> Start Day 1 tasks immediately. Book your first interview within 24 hours of starting this plan!
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add interactive checkbox functionality
+        document.querySelectorAll('.checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                if (this.classList.contains('checked')) {
+                    this.classList.remove('checked');
+                    this.innerHTML = '';
+                } else {
+                    this.classList.add('checked');
+                    this.innerHTML = '✓';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
