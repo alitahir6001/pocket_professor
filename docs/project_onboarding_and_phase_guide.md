@@ -213,14 +213,14 @@ cd ..
 rg --files backend/src/modules/adaptation/phase3 backend/tests/adaptation docs/phase3_adaptation_engine_build_slice.md
 ```
 Confirm presence of:
-- `policyEngine.mjs`
-- `policyEngine.test.mjs`
+- `policyEngine.ts`
+- `policyEngine.test.ts`
 - `phase3_adaptation_engine_build_slice.md`
 
 ### Step 14 — Manual rule walk-through
 Open the rule engine and verify each required rule exists:
 ```bash
-sed -n '1,260p' backend/src/modules/adaptation/phase3/policyEngine.mjs
+sed -n '1,260p' backend/src/modules/adaptation/phase3/policyEngine.ts
 ```
 Check each mapping:
 1. `missed_sessions_7d >= 2` → `workload_delta_percent: -25`
@@ -234,6 +234,24 @@ Check each mapping:
 - [ ] Phase 3 tests passing locally
 - [ ] deterministic priority order confirmed
 - [ ] known gaps captured under `current conflicts`
+
+### Step 16 — Run agent rejection-path adversarial tests
+```bash
+cd backend
+npm run test:phase3
+```
+Pass condition:
+- adaptation tests pass
+- agent-output guard adversarial tests pass
+
+### Step 17 — Inspect reject reason codes
+```bash
+sed -n '1,260p' backend/src/modules/agents/phase2/validation/agentOutputGuard.ts
+```
+Confirm reason codes include:
+- `SCHEMA_VALIDATION_FAILED`
+- `UNMAPPED_ACTION`
+- `PROHIBITED_CONTENT`
 
 ---
 

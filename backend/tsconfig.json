@@ -12,6 +12,8 @@
   },
   "include": [
     "src/modules/adaptation/phase3/**/*.ts",
-    "tests/adaptation/**/*.ts"
+    "src/modules/agents/phase2/validation/**/*.ts",
+    "tests/adaptation/**/*.ts",
+    "tests/agents/**/*.ts"
   ]
 }
